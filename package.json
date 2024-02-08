@@ -1,0 +1,164 @@
+{
+  "name": "pro-ftp",
+  "displayName": "Pro FTP",
+  "description": "Conexion ftp",
+  "version": "0.0.4",
+  "publisher": "TheNewRol",
+  "icon": "assets/images/FtpPro-icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "pro-ftp.helloWorld"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "ProFtp",
+      "properties": {
+        "ProFtp.hosts": {
+          "title": "Hosts al que se conectara",
+          "description": "",
+          "type": "array",
+          "default": [
+            {
+              "name": "",
+              "host": "",
+              "user": "",
+              "password": "",
+              "protocol": "ftp"
+            }
+          ],
+          "items": {
+            "name": "string",
+            "host": "string",
+            "user": "string",
+            "password": "string",
+            "port": [
+              "ftp",
+              "sftp"
+            ]
+          }
+        },
+        "ProFtp.localPatch": {
+          "title": "Ruta al espacio de trabajo local",
+          "type": "string",
+          "description": "",
+          "default": "${workspaceFolder}"
+        },
+        "ProFtp.remotePatch": {
+          "title": "Ruta remota al que se conecta el FTP",
+          "type": "string",
+          "description": "",
+          "default": "/"
+        },
+        "ProFtp.monitorRemoteFile": {
+          "title": "Monitore de archivo remoto",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string",
+            "scope": "resource"
+          }
+        },
+        "ProFtp.ftpConnections": {
+          "type": "array",
+          "markdownDescription": "Configuración de conexiones FTP",
+          "items": {
+            "type": "object"
+          }
+        },
+        "ProFtp.ftpConnections.conection": {
+          "type": "object",
+          "markdownDescription": "Configuración de destinos para la copia de archivos en FTP",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "pro-ftp.helloWorld",
+        "title": "Hello World"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pro-ftp-manager",
+          "title": "Pro FTP Manager",
+          "icon": "assets/images/FtpPro.svg"
+        }
+      ],
+      "panel": [
+        {
+          "type": "webview",
+          "id": "pro-ftp-monitor",
+          "title": "Monitor file",
+          "icon": "assets/images/FtpPro.svg"
+        }
+      ]
+    },
+    "views": {
+      "pro-ftp-manager": [
+        {
+          "id": "pro-ftp.connections",
+          "name": "Connections",
+          "contextualTitle": "FtpConnections",
+          "icon": "assets/images/FtpPro.svg",
+          "initialSize": 6,
+          "visibility": "visible"
+        },
+        {
+          "id": "pro-ftp.files-queue",
+          "name": "Files in queue",
+          "contextualTitle": "FtpFilesQueue",
+          "icon": "assets/images/FtpPro.svg",
+          "initialSize": 6,
+          "visibility": "visible"
+        }
+      ],
+      "pro-ftp-monitor": [
+        {
+          "type": "webview",
+          "id": "pro-ftp.monitor-file",
+          "name": "Monitor File",
+          "contextualTitle": "FtpMonitorFile",
+          "icon": "assets/images/FtpPro.svg",
+          "initialSize": 6,
+          "visibility": "visible"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/ftp": "^0.3.36",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/ssh2-sftp-client": "^9.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "ftp": "^0.3.10",
+    "ssh2-sftp-client": "^9.1.0"
+  }
+}

@@ -1,0 +1,57 @@
+body {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    font-family: Consolas, "Courier New", monospace;
+}
+.containerFilter{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#selectFile{
+    width: 60%;
+    border-color: #0006;
+}
+#selectHost{
+    width: 15%;
+    border-color: #0006;
+}
+.actions{
+    width: 25%;
+}
+#log{
+    width: 100%;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+}
+#log div.messageLine{
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.vscode-dark #selectFile, .vscode-dark #selectHost, .vscode-dark .actions button{
+    color:white;
+    background-color: transparent;
+}
+.info{
+    color: #7e8eda;
+}
+
+.message.warn{
+    color: #c7f59b;
+}
+.message.notice{
+    color: #fff;
+}
+.message.error, message.emerg{
+    color: #ff8a8a;
+}
+.message span{
+    display: inline-block;
+}
+.referer{
+    color: #7af8ca;
+}
