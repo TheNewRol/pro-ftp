@@ -45,6 +45,21 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 					break;
 			}
 		});
+
+		if (this._view?.visible) {
+			vscode.commands.executeCommand('setContext', 'monitorFocus', this._view?.viewType);
+		}
+
+		// Cuando cambia la visibilidad del webviewView	
+		this._view.onDidChangeVisibility((e) => {
+			// Si el webviewView está visible, establece el contexto activeWebViewPanelId
+			if (this._view?.visible) {
+				vscode.commands.executeCommand('setContext', 'monitorFocus', this._view?.viewType);
+			} else {
+				// Si el webviewView no está visible, establece el contexto activeWebViewPanelId como undefined
+				vscode.commands.executeCommand('setContext', 'monitorFocus', undefined);
+			}
+		});
 	}
 	public async startMonitor(nameServer: string, patchFile: string){
 		let ftpData = this.config.getHostBy("name", nameServer);	
@@ -59,7 +74,7 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 			let localPatch = workspacePatch + "/.vscode" + "/" + fileName;
 
 			if(!workspacePatch || !localPatch){
-				throw new Error("No hay un espacio de trabajo definido o no se puede construir la ruta local")
+				throw new Error("No hay un espacio de trabajo definido o no se puede construir la ruta local");
 			}
 			await this.ftp.connect(ftpData);
 					
@@ -83,16 +98,29 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 					contents: listLines
 				});
 			}, 5000);
-				
+			vscode.commands.executeCommand('setContext', 'monitorIsStart', true);
 		} catch (error){
 			const errorMessage = error instanceof Error ? `Error en el Monitor: ${error.message}` : "ERROR DURANTE LA DESCARGA O CONEXION FTP";	
 			vscode.window.showErrorMessage(errorMessage);	
+			vscode.commands.executeCommand('setContext', 'monitorIsStart', false);
 		}
 	}
 	
 	public stopMonitor(){
 		this.cachedLines = [];
 		clearInterval(this.intervalId);
+		vscode.commands.executeCommand('setContext', 'monitorIsStart', false);
+	}
+	
+	public cleanOutPut(){
+		this._view?.webview.postMessage({
+			command: 'clearOutPut',
+		});
+	}
+	public postMessageStart(){
+		this._view?.webview.postMessage({
+			command: 'start',
+		});
 	}
 	private tailFile = (filePath: string, numLines: number = 50): string => {
 		// Obtener las últimas n líneas del archivo
@@ -162,12 +190,6 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 						<select id="selectFile">
 							${optionsFiles}
 						</select>
-
-						<div class="actions">
-							<button id="start_monitor" data-status="start">Start Monitor</button>
-							<button id="clear_out">Clean Output</button> 
-						</div>
-
 					</div>
 					<div id="log"></div>
 					<script src="${scriptUri}"></script>

@@ -14,6 +14,17 @@ export function activate(context: vscode.ExtensionContext) {
     let monitorFile = vscode.window.registerWebviewViewProvider( ViewFtpMonitorProvider.viewType, viewMonitor );
 
     context.subscriptions.push(monitorFile);
+
+    //COMANDAS MONITOR
+    vscode.commands.registerCommand("pro-ftp.monitor-file-stop", () => {
+        viewMonitor.stopMonitor();
+    });
+    vscode.commands.registerCommand("pro-ftp.monitor-file-start", () => {
+        viewMonitor.postMessageStart();
+    });
+    vscode.commands.registerCommand("pro-ftp.monitor-file-clean", () => {
+        viewMonitor.cleanOutPut();
+    });
 }
 
 // This method is called when your extension is deactivated

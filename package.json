@@ -2,11 +2,15 @@
   "name": "pro-ftp",
   "displayName": "Pro FTP",
   "description": "Conexion ftp",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "TheNewRol",
   "icon": "assets/images/FtpPro-icon.png",
   "engines": {
     "vscode": "^1.85.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheNewRol/pro-ftp.git"
   },
   "categories": [
     "Other"
@@ -82,8 +86,19 @@
     },
     "commands": [
       {
-        "command": "pro-ftp.helloWorld",
-        "title": "Hello World"
+        "command": "pro-ftp.monitor-file-start",
+        "title": "Start Monitor",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "pro-ftp.monitor-file-stop",
+        "title": "Stop Monitor",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "pro-ftp.monitor-file-clean",
+        "title": "Clean Output",
+        "icon": "$(clear-all)"
       }
     ],
     "viewsContainers": {
@@ -133,6 +148,26 @@
           "visibility": "visible"
         }
       ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "pro-ftp.monitor-file-start",
+          "group": "navigation",
+          "when": "monitorFocus == 'pro-ftp.monitor-file' && !monitorIsStart"
+        },
+        {
+          "command": "pro-ftp.monitor-file-stop",
+          "group": "navigation",
+          "when": "monitorFocus == 'pro-ftp.monitor-file' && monitorIsStart"
+        },
+        {
+          "command": "pro-ftp.monitor-file-clean",
+          "group": "navigation",
+          "when": "monitorFocus == 'pro-ftp.monitor-file'"
+        }
+      ]
+      
     }
   },
   "scripts": {
