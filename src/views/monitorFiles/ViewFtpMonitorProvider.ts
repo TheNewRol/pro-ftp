@@ -45,21 +45,6 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 					break;
 			}
 		});
-
-		if (this._view?.visible) {
-			vscode.commands.executeCommand('setContext', 'monitorFocus', this._view?.viewType);
-		}
-
-		// Cuando cambia la visibilidad del webviewView	
-		this._view.onDidChangeVisibility((e) => {
-			// Si el webviewView está visible, establece el contexto activeWebViewPanelId
-			if (this._view?.visible) {
-				vscode.commands.executeCommand('setContext', 'monitorFocus', this._view?.viewType);
-			} else {
-				// Si el webviewView no está visible, establece el contexto activeWebViewPanelId como undefined
-				vscode.commands.executeCommand('setContext', 'monitorFocus', undefined);
-			}
-		});
 	}
 	public async startMonitor(nameServer: string, patchFile: string){
 		let ftpData = this.config.getHostBy("name", nameServer);	
@@ -82,8 +67,8 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 			this.intervalId = setInterval(async () => {
 				let remoteFileStatus = await this.ftp.fileStatus(patchFile);
 				let localFileStatus = this.ftp.localFileStatus(localPatch);
-
-				if(	remoteFileStatus && localFileStatus && 	remoteFileStatus.mtime !== undefined && localFileStatus.mtime !== undefined && 	remoteFileStatus.mtime > localFileStatus.mtime){
+				
+				if(!localFileStatus.exists || (remoteFileStatus && localFileStatus && remoteFileStatus.mtime !== undefined && localFileStatus.mtime !== undefined && 	remoteFileStatus.mtime > localFileStatus.mtime)){
 					await this.ftp.get(patchFile, localPatch);	
 				}
 				
@@ -128,7 +113,7 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 		const start = Math.max(lines.length - numLines, 0);
 		const resultLines = lines.slice(start);
 		const regexTrace = /\r\n|\r|\n|(\\+)n|;/g; // saltos de línea;
-		const regexLog = /(?<info>(\[(?<time>.*?)\]\s\[(?:(?<module>.*?):)?(?<level>.*?)\]\s\[(pid\s(?<pid>\d+)(?::tid\s(?<tid>\d+))?)\]\s\[client\s(?<cliente>.*?)\]))\s(?<message>.*'.*')(?:,\s(?<referer>referer:\s)(?<url>(.*)))/;
+		const regexLog = /(?<info>(\[(?<time>.*?)\]\s\[(?:(?<module>.*?):)?(?<level>.*?)\]\s\[(pid\s(?<pid>\d+)(?::tid\s(?<tid>\d+))?)\]\s\[client\s(?<cliente>.*?)\]))\s(?<message>.*(?:'|,|',?))(?:(\s(?<referer>referer:\s)(?<url>(.*)))?)/;
 		let text = "";
 
 		// Analizar las líneas y agregar los colores correspondientes

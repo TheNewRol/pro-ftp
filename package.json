@@ -2,7 +2,7 @@
   "name": "pro-ftp",
   "displayName": "Pro FTP",
   "description": "Conexion ftp",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "publisher": "TheNewRol",
   "icon": "assets/images/FtpPro-icon.png",
   "engines": {
@@ -153,18 +153,18 @@
       "view/title": [
         {
           "command": "pro-ftp.monitor-file-start",
-          "group": "navigation",
-          "when": "monitorFocus == 'pro-ftp.monitor-file' && !monitorIsStart"
+          "group": "navigation@1",
+          "when": "activePanel == 'workbench.view.extension.pro-ftp-monitor' && !monitorIsStart"
         },
         {
           "command": "pro-ftp.monitor-file-stop",
-          "group": "navigation",
-          "when": "monitorFocus == 'pro-ftp.monitor-file' && monitorIsStart"
+          "group": "navigation@1",
+          "when": "activePanel == 'workbench.view.extension.pro-ftp-monitor' && monitorIsStart"
         },
         {
           "command": "pro-ftp.monitor-file-clean",
-          "group": "navigation",
-          "when": "monitorFocus == 'pro-ftp.monitor-file'"
+          "group": "navigation@2",
+          "when": "activePanel == 'workbench.view.extension.pro-ftp-monitor'"
         }
       ]
       
