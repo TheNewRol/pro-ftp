@@ -95,6 +95,7 @@ export class ViewFtpMonitorProvider implements vscode.WebviewViewProvider {
 		this.cachedLines = [];
 		clearInterval(this.intervalId);
 		vscode.commands.executeCommand('setContext', 'monitorIsStart', false);
+		this.ftp.disconnect();
 	}
 	
 	public cleanOutPut(){

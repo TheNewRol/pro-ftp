@@ -2,7 +2,7 @@
   "name": "pro-ftp",
   "displayName": "Pro FTP",
   "description": "Conexion ftp",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "TheNewRol",
   "icon": "assets/images/FtpPro-icon.png",
   "engines": {

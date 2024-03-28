@@ -55,4 +55,13 @@ export class FtpManager {
 		}
 
 	}
+	public async disconnect(): Promise<void> {
+        if (this.conection) {
+            await this.conection?.end();
+            this.conection = undefined;
+            window.setStatusBarMessage('Conexión cerrada correctamente.');
+        } else {
+            window.showErrorMessage('No hay ninguna conexión activa para cerrar.');
+        }
+    }
 }
